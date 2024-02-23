@@ -13,39 +13,16 @@
           <h2>Раунд {{ round }}</h2>
           <div class="game__mode">
             <h3>Выберите уровень сложности</h3>
-            <div class="game__switch">
-              <input 
-              type="radio" 
-              name="difficulty" 
-              id="easy" 
-              v-model="gameMode" 
-              :value="1500"
-              :disabled="order.length > 0"
-              >
-              <label for="easy">Легко</label>
-            </div>
-            <div class="game__switch">
-              <input 
-              type="radio" 
-              name="difficulty" 
-              id="normal" 
-              v-model="gameMode" 
-              :value="1000"
-              :disabled="order.length > 0"
-              >
-              <label for="normal">Нормально</label>
-            </div>
-            <div class="game__switch">
-              <input 
-              type="radio" 
-              name="difficulty" 
-              id="hard" 
-              v-model="gameMode" 
-              :value="400"
-              :disabled="order.length > 0"
-              >
-              <label for="hard">Сложно</label>
-            </div>
+            <CustomRadio 
+            v-for="option in gameModeOptions"
+            :key="option.id"
+            :name="option.name" 
+            :id="option.id" 
+            :label="option.label" 
+            :value="option.value" 
+            :disabled="order.length > 0"
+            @change="selectDiff"
+            />
           </div>
           <button @click="startRound" :disabled="order.length > 0">Начать игру</button>
         </div>
@@ -60,23 +37,44 @@
 <script>
 import ModalWindow from './components/ModalWindow.vue'
 import LoseMessage from './components/LoseMessage.vue'
+import CustomRadio from './components/CustomRadio.vue'
 export default {
   name: 'App',
   components: {
-    ModalWindow, LoseMessage
+    ModalWindow, LoseMessage, CustomRadio
   },
   data() {
     return {
       round: 1,
       order: [],
       gameMode: 1500,
-      i: 0,
+      iterator: 0,
       doSound: new Audio(require('./assets/audio/do.mp3')),
       reSound: new Audio(require('./assets/audio/re.mp3')),
       miSound: new Audio(require('./assets/audio/mi.mp3')),
       faSound: new Audio(require('./assets/audio/fa.mp3')),
       isReady: false,
-      modalVisible: false
+      modalVisible: false,
+      gameModeOptions: [
+        {
+          label: 'Легко',
+          id: 'easy',
+          value: 1500,
+          name: 'difficulty'
+        },
+        {
+          label: 'Нормально',
+          id: 'normal',
+          value: 1000,
+          name: 'difficulty'
+        },
+        {
+          label: 'Сложно',
+          id: 'hard',
+          value: 400,
+          name: 'difficulty'
+        }
+      ]
     }
   },
   methods: {
@@ -109,12 +107,12 @@ export default {
       await this.markBlock(e.target.id)
       this.playSound(e.target.id)
 
-      if (e.target.id === this.order[this.i]) {
-        this.i += 1
+      if (e.target.id === this.order[this.iterator]) {
+        this.iterator += 1
         
-        if (this.i === this.order.length) {
+        if (this.iterator === this.order.length) {
           this.round += 1
-          this.i = 0
+          this.iterator = 0
           this.startRound()
         }
       } else {
@@ -122,7 +120,7 @@ export default {
         this.round = 1
         this.order = []
         this.isReady = false
-        this.i = 0
+        this.iterator = 0
       }
     },
     playSound(id) {
@@ -146,8 +144,10 @@ export default {
     },
     changeVisibility() {
       this.modalVisible = !this.modalVisible
+    },
+    selectDiff(mode) {
+      this.gameMode = mode
     }
-
   }
 }
 </script>
