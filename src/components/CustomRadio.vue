@@ -15,6 +15,10 @@
 <script>
 
 export default {
+  model: {
+    prop: 'modelValue',
+    event: 'change'
+  },
   props: {
     modelValue: [String, Number],
     label: [String, Number],
@@ -22,11 +26,6 @@ export default {
     id: [String, Number],
     name: String,
     disabled: Boolean
-  }, 
-  methods: {
-    suka() {
-      alert('asd')
-    }
   }
 }
 </script>

@@ -13,16 +13,7 @@
           <h2>Раунд {{ round }}</h2>
           <div class="game__mode">
             <h3>Выберите уровень сложности</h3>
-            <CustomRadio 
-            v-for="option in gameModeOptions"
-            :key="option.id"
-            :name="option.name" 
-            :id="option.id" 
-            :label="option.label" 
-            :value="option.value" 
-            :disabled="order.length > 0"
-            @change="selectDiff"
-            />
+            <RadioGroup :options="gameModeOptions" :disabled="order.length > 0" v-model="gameMode"/>
           </div>
           <button @click="startRound" :disabled="order.length > 0">Начать игру</button>
         </div>
@@ -37,11 +28,13 @@
 <script>
 import ModalWindow from './components/ModalWindow.vue'
 import LoseMessage from './components/LoseMessage.vue'
-import CustomRadio from './components/CustomRadio.vue'
+import RadioGroup from './components/RadioGroup.vue'
 export default {
   name: 'App',
   components: {
-    ModalWindow, LoseMessage, CustomRadio
+    ModalWindow, 
+    LoseMessage, 
+    RadioGroup
   },
   data() {
     return {
@@ -144,9 +137,6 @@ export default {
     },
     changeVisibility() {
       this.modalVisible = !this.modalVisible
-    },
-    selectDiff(mode) {
-      this.gameMode = mode
     }
   }
 }
