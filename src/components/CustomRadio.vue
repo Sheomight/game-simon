@@ -6,6 +6,7 @@
     :id="id" 
     :value="value"
     :disabled="disabled"
+    :checked="value === modelValue"
     @change="$emit('change', +$event.target.value)"
     >
     <label :for="id">{{ label }}</label>

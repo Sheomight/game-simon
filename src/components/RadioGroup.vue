@@ -42,6 +42,9 @@ export default {
     changeOption(value) {
       this.selectedOption = value
     }
+  },
+  mounted() {
+    this.selectedOption = this.modelValue
   }
 }
 </script>
