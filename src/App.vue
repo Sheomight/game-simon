@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <h1>Saimon game</h1>
+    <h1>Simon game</h1>
     <div class="wrapper">
       <div class="game">
         <div class="game__field">
