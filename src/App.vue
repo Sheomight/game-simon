@@ -124,7 +124,6 @@ export default {
     },
     async checkOrder(e) {
       await this.markBlock(e.target.id)
-
       if (e.target.id === this.order[this.iterator]) {
         this.iterator += 1
 
