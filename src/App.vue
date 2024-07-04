@@ -4,18 +4,44 @@
     <div class="wrapper">
       <div class="game">
         <div class="game__field">
-          <button class="game__btn" id="b1" @click="checkOrder" :disabled="!isReady"></button>
-          <button class="game__btn" id="b2" @click="checkOrder" :disabled="!isReady"></button>
-          <button class="game__btn" id="b3" @click="checkOrder" :disabled="!isReady"></button>
-          <button class="game__btn" id="b4" @click="checkOrder" :disabled="!isReady"></button>
+          <button
+            class="game__btn"
+            id="b1"
+            @click="checkOrder"
+            :disabled="!isReady"
+          ></button>
+          <button
+            class="game__btn"
+            id="b2"
+            @click="checkOrder"
+            :disabled="!isReady"
+          ></button>
+          <button
+            class="game__btn"
+            id="b3"
+            @click="checkOrder"
+            :disabled="!isReady"
+          ></button>
+          <button
+            class="game__btn"
+            id="b4"
+            @click="checkOrder"
+            :disabled="!isReady"
+          ></button>
         </div>
         <div class="game__info">
           <h2>Раунд {{ round }}</h2>
           <div class="game__mode">
             <h3>Выберите уровень сложности</h3>
-            <RadioGroup :options="gameModeOptions" :disabled="order.length > 0" v-model="gameMode"/>
+            <RadioGroup
+              :options="gameModeOptions"
+              :disabled="order.length > 0"
+              v-model="gameMode"
+            />
           </div>
-          <button @click="startRound" :disabled="order.length > 0">Начать игру</button>
+          <button @click="startRound" :disabled="order.length > 0">
+            Начать игру
+          </button>
         </div>
       </div>
     </div>
@@ -26,15 +52,15 @@
 </template>
 
 <script>
-import ModalWindow from './components/ModalWindow.vue'
-import LoseMessage from './components/LoseMessage.vue'
-import RadioGroup from './components/RadioGroup.vue'
+import ModalWindow from "./components/ModalWindow.vue"
+import LoseMessage from "./components/LoseMessage.vue"
+import RadioGroup from "./components/RadioGroup.vue"
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    ModalWindow, 
-    LoseMessage, 
-    RadioGroup
+    ModalWindow,
+    LoseMessage,
+    RadioGroup,
   },
   data() {
     return {
@@ -42,32 +68,32 @@ export default {
       order: [],
       gameMode: 1500,
       iterator: 0,
-      doSound: new Audio(require('./assets/audio/do.mp3')),
-      reSound: new Audio(require('./assets/audio/re.mp3')),
-      miSound: new Audio(require('./assets/audio/mi.mp3')),
-      faSound: new Audio(require('./assets/audio/fa.mp3')),
+      doSound: new Audio(require("./assets/audio/do.mp3")),
+      reSound: new Audio(require("./assets/audio/re.mp3")),
+      miSound: new Audio(require("./assets/audio/mi.mp3")),
+      faSound: new Audio(require("./assets/audio/fa.mp3")),
       isReady: false,
       modalVisible: false,
       gameModeOptions: [
         {
-          label: 'Легко',
-          id: 'easy',
+          label: "Легко",
+          id: "easy",
           value: 1500,
-          name: 'difficulty'
+          name: "difficulty",
         },
         {
-          label: 'Нормально',
-          id: 'normal',
+          label: "Нормально",
+          id: "normal",
           value: 1000,
-          name: 'difficulty'
+          name: "difficulty",
         },
         {
-          label: 'Сложно',
-          id: 'hard',
+          label: "Сложно",
+          id: "hard",
           value: 400,
-          name: 'difficulty'
-        }
-      ]
+          name: "difficulty",
+        },
+      ],
     }
   },
   methods: {
@@ -75,12 +101,12 @@ export default {
       return Math.floor(Math.random() * (5 - 1) + 1)
     },
     async startRound() {
-      this.order.push('b' + this.getRandomNum())
+      this.order.push("b" + this.getRandomNum())
       this.isReady = false
       for (let blockId of this.order) {
         await new Promise((resolve) => {
           setTimeout(() => {
-            resolve('pause')
+            resolve("pause")
           }, this.gameMode)
         })
         await this.markBlock(blockId)
@@ -89,20 +115,19 @@ export default {
     },
     async markBlock(blockId) {
       document.getElementById(blockId).style.opacity = 1
-        this.playSound(blockId)
-        await new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(document.getElementById(blockId).style.opacity = 0.6)
-          }, 400)
-        })
+      this.playSound(blockId)
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve((document.getElementById(blockId).style.opacity = 0.6))
+        }, 400)
+      })
     },
     async checkOrder(e) {
       await this.markBlock(e.target.id)
-      this.playSound(e.target.id)
 
       if (e.target.id === this.order[this.iterator]) {
         this.iterator += 1
-        
+
         if (this.iterator === this.order.length) {
           this.round += 1
           this.iterator = 0
@@ -118,27 +143,27 @@ export default {
     },
     playSound(id) {
       switch (id) {
-        case 'b1':
-          this.doSound.play();
-          break;
-        case 'b2':
-          this.reSound.play();
-          break;
-        case 'b3':
-          this.miSound.play();
-          break;
-        case 'b4':
-          this.faSound.play();
-          break;
+        case "b1":
+          this.doSound.play()
+          break
+        case "b2":
+          this.reSound.play()
+          break
+        case "b3":
+          this.miSound.play()
+          break
+        case "b4":
+          this.faSound.play()
+          break
 
         default:
-          break;
+          break
       }
     },
     changeVisibility() {
       this.modalVisible = !this.modalVisible
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -180,7 +205,7 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   border-radius: 50%;
-  overflow:hidden;
+  overflow: hidden;
   border: 8px solid lightgray;
 }
 
